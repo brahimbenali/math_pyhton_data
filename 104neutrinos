@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+import math
+import sys
+
+
+def harmonic(nb_arg, entry, inti3):
+    harmoni = nb_arg / ((1 / entry) + ((nb_arg - 1) / inti3))
+    return round(harmoni, 2)
+
+
+def root_mean_square(inti1, nb_arg, entry, inti3):
+    calc = (inti3**2) + (inti1**2) * nb_arg - 1
+    root_result = math.sqrt(calc + entry**2 / nb_arg)
+    return round(root_result, 2)
+
+
+def standard_deviation(init3, nb_arg, entry, a_m):
+    mean = (a_m * nb_arg + entry) / (nb_arg + 1)
+    deviation = math.sqrt(((nb_arg * (init3 ** 2)) + ((entry - a_m) * (entry - mean))) / (nb_arg + 1))
+    return round(deviation, 2)
+
+
+def calc_arithmetic_means(init1, nb_arg, entry):
+    result_b = (init1 * (nb_arg - 1) + entry) / nb_arg
+    return round(result_b, 2)
+
+
+def solve(entry, int1, int2, int3, nb_arg):
+    print(f'\tNumber of values:\t{nb_arg}')
+    a_m = calc_arithmetic_means(int1, nb_arg, entry)
+    s_d = standard_deviation(int2, nb_arg, entry, a_m)
+    r_m = root_mean_square(a_m, nb_arg, entry, int2)
+    h_m = harmonic(nb_arg, entry, int2)
+    print(f'\tStandard deviation:\t{s_d}')
+    print(f'\tArithmetic mean:\t{a_m}')
+    print(f'\tRoot mean square:\t{r_m}')
+    print(f'\tHarmonic mean:\t\t{h_m}')
+    int1 = a_m
+    int3 = s_d
+    main_calcul(nb_arg, int1, int2, int3)
+
+
+def main_calcul(nb_arg, int1, int2, int3):
+    try:
+        entry = input("Enter next value: ")
+    except KeyboardInterrupt:
+        exit(0)
+    if entry.strip():
+        if entry == "END":
+            exit(0)
+        if entry.isdigit():
+            entry = int(entry)
+        else:
+            exit(84)
+        if entry > 0:
+            nb_arg += 1
+            if int3 < 0 or int2 <= 0:
+                exit(84)
+            solve(entry, int1, int2, int3, nb_arg)
+            exit(0)
+        else:
+            exit(84)
+    else:
+        exit(84)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 5:
+        exit(84)
+    main_calcul(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))
+    exit(0)
